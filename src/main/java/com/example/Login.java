@@ -9,7 +9,7 @@ public class Login {
 
     // Constructor to set up the registration fields
     public Login(String username, String password, String phoneNumber, 
-                 String firstName, String lastName) {
+    String firstName, String lastName) {
         this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
