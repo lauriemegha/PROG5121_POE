@@ -72,4 +72,46 @@ public class Message {
         }
         return "Message ready to send.";
     }
+
+    // Added in step 4: Handles interactive routing status mapping assignments
+    public String SentMessage(int choice) {
+        if (choice == 1) {
+            this.messageStatus = "Sent";
+            return "Message successfully sent.";
+        } else if (choice == 2) {
+            this.messageStatus = "Disregarded";
+            return "Press 0 to delete the message.";
+        } else if (choice == 3) {
+            this.messageStatus = "Stored";
+            return "Message successfully stored.";
+        }
+        this.messageStatus = "Unknown";
+        return "Invalid choice.";
+    }
+
+    // Added in step 4: Direct output sequence ordering
+    public String printMessages() {
+        return "Message ID: " + messageID + "\n"
+             + "Message Hash: " + messageHash + "\n"
+             + "Recipient: " + recipient + "\n"
+             + "Message: " + messageContent;
+    }
+
+    // Added in step 4: Matches the exact method typo string signature required
+    public int returnTotalMessagess() {
+        return this.numMessagesSent;
+    }
+
+    // Added in step 4: Simulated JSON research placeholder output
+    public void storeMessage() {
+        String jsonMock = "{\n"
+                        + "  \"messageID\": \"" + messageID + "\",\n"
+                        + "  \"recipient\": \"" + recipient + "\",\n"
+                        + "  \"status\": \"" + messageStatus + "\"\n"
+                        + "}";
+        System.out.println("\n[JSON Research Export saved to memory]:\n" + jsonMock);
+    }
+
+    public String getMessageID() { return messageID; }
+    public String getMessageHash() { return messageHash; }
 }
