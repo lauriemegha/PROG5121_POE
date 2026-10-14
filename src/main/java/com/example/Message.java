@@ -39,7 +39,6 @@ public class Message {
              + "contain an international code. Please correct the number and try again.";
     }
 
-    // Added in step 3: Compiles uppercase word hashing token profiles
     public String createMessageHash() {
         String idPart = (messageID != null && messageID.length() >= 2) ? 
                         messageID.substring(0, 2) : "00";
@@ -63,7 +62,6 @@ public class Message {
         return idPart + ":" + numMessagesSent + ":" + combinedWords;
     }
 
-    // Added in step 3: Validates maximum text string lengths
     public String validateMessageLength() {
         if (this.messageContent == null || this.messageContent.length() > 250) {
             int exceeded = (this.messageContent != null) ? this.messageContent.length() - 250 : 0;
@@ -73,7 +71,6 @@ public class Message {
         return "Message ready to send.";
     }
 
-    // Added in step 4: Handles interactive routing status mapping assignments
     public String SentMessage(int choice) {
         if (choice == 1) {
             this.messageStatus = "Sent";
@@ -89,7 +86,6 @@ public class Message {
         return "Invalid choice.";
     }
 
-    // Added in step 4: Direct output sequence ordering
     public String printMessages() {
         return "Message ID: " + messageID + "\n"
              + "Message Hash: " + messageHash + "\n"
@@ -97,12 +93,10 @@ public class Message {
              + "Message: " + messageContent;
     }
 
-    // Added in step 4: Matches the exact method typo string signature required
     public int returnTotalMessagess() {
         return this.numMessagesSent;
     }
 
-    // Added in step 4: Simulated JSON research placeholder output
     public void storeMessage() {
         String jsonMock = "{\n"
                         + "  \"messageID\": \"" + messageID + "\",\n"
