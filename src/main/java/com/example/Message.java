@@ -15,7 +15,7 @@ public class Message {
         this.recipient = recipient;
         this.messageContent = messageContent;
         this.messageID = generateRandomID();
-        this.messageHash = createMessageHash(); // Added in step 3
+        this.messageHash = createMessageHash(); 
     }
 
     private String generateRandomID() {

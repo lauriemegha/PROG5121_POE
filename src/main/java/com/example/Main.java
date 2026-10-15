@@ -38,7 +38,7 @@ public class Main {
 
                 boolean running = true;
                 while (running) {
-                    System.out.println("\n----- QUICKCHAT MENU -----");
+                    System.out.println("\n=============== QUICKCHAT MENU ===============");
                     System.out.println("1) Send Messages");
                     System.out.println("2) Show recently sent messages");
                     System.out.println("3) Quit");
@@ -84,7 +84,7 @@ public class Main {
                                     chatLog[messageCounter] = tempMsg;
                                     messageCounter++;
                                     
-                                    System.out.println("\n--- FULL MESSAGE DETAILS ---");
+                                    System.out.println("\n=============== FULL MESSAGE DETAILS ===============");
                                     System.out.println(tempMsg.printMessages());
                                     tempMsg.storeMessage(); 
                                 }
