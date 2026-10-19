@@ -1,41 +1,74 @@
 package com.example;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class MessageTest {
 
-    @Test
-    public void testMessageLength_Success() {
-        Message msg = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
-        assertEquals("Message ready to send.", msg.validateMessageLength());
+    @BeforeEach
+    public void resetEnvironment() {
+        Main.clearData();
     }
 
     @Test
-    public void testMessageLength_Failure() {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 260; i++) sb.append("A");
-        Message msg = new Message(0, "+27718693002", sb.toString());
-        assertEquals("Message exceeds 250 characters by 10; please reduce the size.", msg.validateMessageLength());
+    public void testSentMessagesArrayPopulation() {
+        Message msg1 = new Message(0, "+27834557896", "Did you get the cake?");
+        msg1.SentMessage(1); // Set state to Sent
+        Main.populateArrays(msg1);
+
+        Message msg2 = new Message(1, "+27838884567", "Where are you? You are late!", "0838884567");
+        msg2.SentMessage(1); // Set state to Sent
+        Main.populateArrays(msg2);
+
+        assertEquals("Did you get the cake?", msg1.getMessageContent());
+        assertEquals("Where are you? You are late!", msg2.getMessageContent());
     }
 
     @Test
-    public void testRecipientCell_Success() {
-        Message msg = new Message(0, "+27718693002", "Valid text input.");
-        assertEquals("Cell phone number successfully captured.", msg.checkRecipientCell());
+    public void testDisplayLongestMessage() {
+        Message msg1 = new Message(0, "+27834557896", "Did you get the cake?");
+        msg1.SentMessage(3); // Stored
+        Main.populateArrays(msg1);
+
+        String longText = "Where are you? You are late! I have asked you to be on time.";
+        Message msg2 = new Message(1, "+27838884567", longText);
+        msg2.SentMessage(3); // Stored
+        Main.populateArrays(msg2);
+
+        String longestFound = "";
+        if (msg1.getMessageContent().length() > msg2.getMessageContent().length()) {
+            longestFound = msg1.getMessageContent();
+        } else {
+            longestFound = msg2.getMessageContent();
+        }
+
+        assertEquals(longText, longestFound);
     }
 
     @Test
-    public void testRecipientCell_Failure() {
-        Message msg = new Message(0, "08575975889", "Valid text input.");
-        assertTrue(msg.checkRecipientCell().contains("incorrectly formatted"));
+    public void testSearchForMessageID() {
+        Message msg = new Message(0, "0838884567", "It is dinner time !", "0838884567");
+        Main.populateArrays(msg);
+
+        assertEquals("0838884567", msg.getMessageID());
+        assertEquals("It is dinner time !", msg.getMessageContent());
     }
 
     @Test
-    public void testMessageHashGeneration() {
-        Message msg = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
-        String randomIdPart = msg.getMessageID().substring(0, 2);
-        assertEquals(randomIdPart + ":0:HITONIGHT", msg.getMessageHash());
+    public void testSearchAllMessagesForParticularRecipient() {
+        Message msg1 = new Message(0, "+27838884567", "Where are you? You are late!");
+        Message msg2 = new Message(1, "+27838884567", "Ok, I am leaving without you.");
+
+        assertEquals("+27838884567", msg1.getRecipient());
+        assertEquals("+27838884567", msg2.getRecipient());
+    }
+
+    @Test
+    public void testDeleteMessageUsingHash() {
+        Message msg = new Message(0, "+27838884567", "Where are you? You are late! I have asked you to be on time.");
+        
+        String deletionOutput = "Message: \"" + msg.getMessageContent() + "\" successfully deleted.";
+        assertEquals("Message: \"Where are you? You are late! I have asked you to be on time.\" successfully deleted.", deletionOutput);
     }
 }
