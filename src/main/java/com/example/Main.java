@@ -149,9 +149,45 @@ public class Main {
                     }
                 }
                 break;
+            case "d":
+                System.out.print("\nEnter Recipient Number to filter: ");
+                String searchTarget = scanner.nextLine();
+                for (int i = 0; i < globalCount; i++) {
+                    if (rawMessagesLog[i] != null && rawMessagesLog[i].getRecipient().equals(searchTarget)) {
+                        System.out.println("- " + rawMessagesLog[i].getMessageContent());
+                    }
+                }
+                break;
+
+            case "e":
+                System.out.print("\nEnter Message Hash to delete: ");
+                String deleteHash = scanner.nextLine();
+                boolean deleted = false;
+                for (int i = 0; i < globalCount; i++) {
+                    if (rawMessagesLog[i] != null && rawMessagesLog[i].getMessageHash().equalsIgnoreCase(deleteHash)) {
+                        System.out.println("Message: \"" + rawMessagesLog[i].getMessageContent() + "\" successfully deleted.");
+                        rawMessagesLog[i] = null; // Clears the record tracking slot
+                        deleted = true;
+                        break;
+                    }
+                }
+                if (!deleted) System.out.println("Message Hash not found.");
+                break;
+
+            case "f":
+                System.out.println("\n--- FULL MESSAGES REPORT ---");
+                for (int i = 0; i < globalCount; i++) {
+                    if (rawMessagesLog[i] != null) {
+                        System.out.println("Hash: " + messageHashArray[i] 
+                                         + " | Recipient: " + rawMessagesLog[i].getRecipient() 
+                                         + " | Message: " + rawMessagesLog[i].getMessageContent());
+                    }
+                }
+                break;
 
             default:
                 System.out.println("Invalid reporting selection choice.");
+
         }
     }
 
