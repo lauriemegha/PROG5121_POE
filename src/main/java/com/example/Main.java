@@ -128,7 +128,45 @@ public class Main {
         scanner.close();
     }
 
-   public static void populateArrays(Message msg) {
+    private static void handleStoredMessagesMenu(Scanner scanner) {
+        System.out.println("\n----- STORED MESSAGES REPORT DASHBOARD -----");
+        System.out.println("a) Display recipient of all stored messages");
+        System.out.println("b) Display the longest stored message");
+        System.out.println("c) Search for a message ID (Coming Soon)");
+        System.out.println("d) Search all messages for a particular recipient (Coming Soon)");
+        System.out.println("e) Delete a message using message hash (Coming Soon)");
+        System.out.println("f) Display report of all messages (Coming Soon)");
+        System.out.print("Select feature letter: ");
+        String choice = scanner.nextLine().toLowerCase();
+
+        switch (choice) {
+            case "a":
+                System.out.println("\n--- STORED MESSAGES CONTACTS ---");
+                for (int i = 0; i < globalCount; i++) {
+                    if (rawMessagesLog[i] != null && "Stored".equals(rawMessagesLog[i].getMessageStatus())) {
+                        System.out.println("Recipient: " + rawMessagesLog[i].getRecipient());
+                    }
+                }
+                break;
+
+            case "b":
+                String longest = "";
+                for (int i = 0; i < globalCount; i++) {
+                    if (rawMessagesLog[i] != null && "Stored".equals(rawMessagesLog[i].getMessageStatus())) {
+                        if (rawMessagesLog[i].getMessageContent().length() > longest.length()) {
+                            longest = rawMessagesLog[i].getMessageContent();
+                        }
+                    }
+                }
+                System.out.println("\nLongest Stored Message: " + longest);
+                break;
+
+            default:
+                System.out.println("Invalid reporting selection choice.");
+        }
+    }
+
+    public static void populateArrays(Message msg) {
         rawMessagesLog[globalCount] = msg;
         messageHashArray[globalCount] = msg.getMessageHash();
         messageIdArray[globalCount] = msg.getMessageID();
