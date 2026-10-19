@@ -50,7 +50,8 @@ public class Main {
                     System.out.println("\n=============== QUICKCHAT MENU ===============");
                     System.out.println("1) Send Messages");
                     System.out.println("2) Show recently sent messages");
-                    System.out.println("3) Quit");
+                    System.out.println("3) Stored Messages Menu (Part 3 Options)");
+                    System.out.println("4) Quit");
                     System.out.print("Choose an option: ");
                     
                     int option = scanner.nextInt();
@@ -58,49 +59,7 @@ public class Main {
 
                     switch (option) {
                         case 1:
-                            if (messageCounter >= maxMessages) {
-                                System.out.println("You have reached your set limit of " 
-                                                 + maxMessages + " messages.");
-                                break;
-                            }
-
-                            System.out.println("\nEnter Recipient Cell Number (+27XXXXXXXXX): ");
-                            String targetCell = scanner.nextLine();
-
-                            System.out.println("Enter Message (Max 250 characters): ");
-                            String content = scanner.nextLine();
-
-                            Message tempMsg = new Message(messageCounter, targetCell, content);
-
-                            String cellCheck = tempMsg.checkRecipientCell();
-                            String lengthCheck = tempMsg.validateMessageLength();
-
-                            System.out.println("\n" + cellCheck);
-                            System.out.println(lengthCheck);
-
-                            if (cellCheck.contains("successfully") && lengthCheck.contains("ready")) {
-                                System.out.println("\nAction required for completed message:");
-                                System.out.println("1 - Send Message");
-                                System.out.println("2 - Disregard Message");
-                                System.out.println("3 - Store Message to send later");
-                                System.out.print("Select action: ");
-                                int actionChoice = scanner.nextInt();
-                                scanner.nextLine();
-
-                                System.out.println("\n" + tempMsg.SentMessage(actionChoice));
-                                
-                                if (actionChoice == 1 || actionChoice == 3) {
-                                    chatLog[messageCounter] = tempMsg;
-                                    messageCounter++;
-                                    
-                                    System.out.println("\n=============== FULL MESSAGE DETAILS ===============");
-                                    System.out.println(tempMsg.printMessages());
-                                    tempMsg.storeMessage(); 
-                                    populateArrays(tempMsg);
-                                }
-                            } else {
-                                System.out.println("Message processing aborted due to format errors.");
-                            }
+                            // ... (keep case 1 exactly as it is)
                             break;
 
                         case 2:
@@ -108,6 +67,11 @@ public class Main {
                             break;
 
                         case 3:
+                            // Calls your sub-menu dashboard loop right here
+                            handleStoredMessagesMenu(scanner);
+                            break;
+
+                        case 4:
                             running = false;
                             System.out.println("\n=========================================");
                             int finalTotal = (messageCounter > 0) ? 
@@ -121,6 +85,7 @@ public class Main {
                             System.out.println("Invalid selection. Try again.");
                     }
                 }
+
             }
         } else {
             System.out.println("\nRegistration metrics failed. App terminated.");
@@ -159,6 +124,30 @@ public class Main {
                     }
                 }
                 System.out.println("\nLongest Stored Message: " + longest);
+                break;
+
+            case "c":
+                System.out.print("\nEnter Message ID to look up: ");
+                String searchID = scanner.nextLine();
+                boolean idFound = false;
+                for (int i = 0; i < globalCount; i++) {
+                    if (rawMessagesLog[i] != null && rawMessagesLog[i].getMessageID().equals(searchID)) {
+                        System.out.println("Message: " + rawMessagesLog[i].getMessageContent());
+                        idFound = true;
+                        break;
+                    }
+                }
+                if (!idFound) System.out.println("Message ID not found.");
+                break;
+
+            case "d":
+                System.out.print("\nEnter Recipient Number to filter: ");
+                String searchTarget = scanner.nextLine();
+                for (int i = 0; i < globalCount; i++) {
+                    if (rawMessagesLog[i] != null && rawMessagesLog[i].getRecipient().equals(searchTarget)) {
+                        System.out.println("- " + rawMessagesLog[i].getMessageContent());
+                    }
+                }
                 break;
 
             default:
