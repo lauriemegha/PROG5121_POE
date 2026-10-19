@@ -96,6 +96,7 @@ public class Main {
                                     System.out.println("\n=============== FULL MESSAGE DETAILS ===============");
                                     System.out.println(tempMsg.printMessages());
                                     tempMsg.storeMessage(); 
+                                    populateArrays(tempMsg);
                                 }
                             } else {
                                 System.out.println("Message processing aborted due to format errors.");
@@ -126,8 +127,22 @@ public class Main {
         }
         scanner.close();
     }
-    
-    // Testing hooks for running automated assertions smoothly
+
+   public static void populateArrays(Message msg) {
+        rawMessagesLog[globalCount] = msg;
+        messageHashArray[globalCount] = msg.getMessageHash();
+        messageIdArray[globalCount] = msg.getMessageID();
+
+        if ("Sent".equals(msg.getMessageStatus())) {
+            sentMessagesArray[globalCount] = msg.getMessageContent();
+        } else if ("Disregarded".equals(msg.getMessageStatus())) {
+            disregardedMessagesArray[globalCount] = msg.getMessageContent();
+        } else if ("Stored".equals(msg.getMessageStatus())) {
+            storedMessagesArray[globalCount] = msg.getMessageContent();
+        }
+        globalCount++;
+    }
+
     public static void clearData() { globalCount = 0; }
     public static int getGlobalCount() { return globalCount; }
 }
