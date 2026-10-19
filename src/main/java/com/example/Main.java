@@ -3,6 +3,15 @@ package com.example;
 import java.util.Scanner;
 
 public class Main {
+    // Parallel array storage limits set to capacity of 100 entries
+    private static String[] sentMessagesArray = new String[100];
+    private static String[] disregardedMessagesArray = new String[100];
+    private static String[] storedMessagesArray = new String[100];
+    private static String[] messageHashArray = new String[100];
+    private static String[] messageIdArray = new String[100];
+    private static Message[] rawMessagesLog = new Message[100];
+    private static int globalCount = 0;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         
@@ -117,4 +126,8 @@ public class Main {
         }
         scanner.close();
     }
+    
+    // Testing hooks for running automated assertions smoothly
+    public static void clearData() { globalCount = 0; }
+    public static int getGlobalCount() { return globalCount; }
 }

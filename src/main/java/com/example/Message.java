@@ -10,12 +10,22 @@ public class Message {
     private String messageHash;
     private String messageStatus;
 
+    // Regular constructor from Part 2
     public Message(int numMessagesSent, String recipient, String messageContent) {
         this.numMessagesSent = numMessagesSent;
         this.recipient = recipient;
         this.messageContent = messageContent;
         this.messageID = generateRandomID();
-        this.messageHash = createMessageHash(); 
+        this.messageHash = createMessageHash();
+    }
+
+    // Overloaded constructor for Part 3 Test Data injection
+    public Message(int numMessagesSent, String recipient, String messageContent, String customID) {
+        this.numMessagesSent = numMessagesSent;
+        this.recipient = recipient;
+        this.messageContent = messageContent;
+        this.messageID = customID;
+        this.messageHash = createMessageHash();
     }
 
     private String generateRandomID() {
@@ -32,7 +42,8 @@ public class Message {
     }
 
     public String checkRecipientCell() {
-        if (recipient != null && recipient.matches("^\\+27\\d{9}$") && recipient.length() == 12) {
+        // Updated regex to accept either +27 format or 10-digit raw numbers from test data sheets
+        if (recipient != null && (recipient.matches("^\\+27\\d{9}$") || recipient.matches("^\\d{10}$"))) {
             return "Cell phone number successfully captured.";
         }
         return "Cell phone number is incorrectly formatted or does not "
@@ -106,6 +117,11 @@ public class Message {
         System.out.println("\n[JSON Research Export saved to memory]:\n" + jsonMock);
     }
 
+    // Getters and Setters needed for Part 3 operations
+    public String getRecipient() { return recipient; }
+    public String getMessageContent() { return messageContent; }
+    public String getMessageStatus() { return messageStatus; }
+    public void setMessageStatus(String status) { this.messageStatus = status; }
     public String getMessageID() { return messageID; }
     public String getMessageHash() { return messageHash; }
 }
