@@ -59,7 +59,49 @@ public class Main {
 
                     switch (option) {
                         case 1:
-                            // ... (keep case 1 exactly as it is)
+                            if (messageCounter >= maxMessages) {
+                                System.out.println("You have reached your set limit of " 
+                                                 + maxMessages + " messages.");
+                                break;
+                            }
+
+                            System.out.println("\nEnter Recipient Cell Number (+27XXXXXXXXX): ");
+                            String targetCell = scanner.nextLine();
+
+                            System.out.println("Enter Message (Max 250 characters): ");
+                            String content = scanner.nextLine();
+
+                            Message tempMsg = new Message(messageCounter, targetCell, content);
+
+                            String cellCheck = tempMsg.checkRecipientCell();
+                            String lengthCheck = tempMsg.validateMessageLength();
+
+                            System.out.println("\n" + cellCheck);
+                            System.out.println(lengthCheck);
+
+                            if (cellCheck.contains("successfully") && lengthCheck.contains("ready")) {
+                                System.out.println("\nAction required for completed message:");
+                                System.out.println("1 - Send Message");
+                                System.out.println("2 - Disregard Message");
+                                System.out.println("3 - Store Message to send later");
+                                System.out.print("Select action: ");
+                                int actionChoice = scanner.nextInt();
+                                scanner.nextLine();
+
+                                System.out.println("\n" + tempMsg.SentMessage(actionChoice));
+                                
+                                if (actionChoice == 1 || actionChoice == 3) {
+                                    chatLog[messageCounter] = tempMsg;
+                                    messageCounter++;
+                                    
+                                    System.out.println("\n=============== FULL MESSAGE DETAILS ===============");
+                                    System.out.println(tempMsg.printMessages());
+                                    tempMsg.storeMessage(); 
+                                    populateArrays(tempMsg);
+                                }
+                            } else {
+                                System.out.println("Message processing aborted due to format errors.");
+                            }
                             break;
 
                         case 2:
@@ -67,7 +109,6 @@ public class Main {
                             break;
 
                         case 3:
-                            // Calls your sub-menu dashboard loop right here
                             handleStoredMessagesMenu(scanner);
                             break;
 
@@ -97,10 +138,10 @@ public class Main {
         System.out.println("\n----- STORED MESSAGES REPORT DASHBOARD -----");
         System.out.println("a) Display recipient of all stored messages");
         System.out.println("b) Display the longest stored message");
-        System.out.println("c) Search for a message ID (Coming Soon)");
-        System.out.println("d) Search all messages for a particular recipient (Coming Soon)");
-        System.out.println("e) Delete a message using message hash (Coming Soon)");
-        System.out.println("f) Display report of all messages (Coming Soon)");
+        System.out.println("c) Search for a message ID");
+        System.out.println("d) Search all messages for a particular recipient");
+        System.out.println("e) Delete a message using message hash");
+        System.out.println("f) Display report of all messages");
         System.out.print("Select feature letter: ");
         String choice = scanner.nextLine().toLowerCase();
 
@@ -149,24 +190,15 @@ public class Main {
                     }
                 }
                 break;
-            case "d":
-                System.out.print("\nEnter Recipient Number to filter: ");
-                String searchTarget = scanner.nextLine();
-                for (int i = 0; i < globalCount; i++) {
-                    if (rawMessagesLog[i] != null && rawMessagesLog[i].getRecipient().equals(searchTarget)) {
-                        System.out.println("- " + rawMessagesLog[i].getMessageContent());
-                    }
-                }
-                break;
 
-            case "e":
+           case "e":
                 System.out.print("\nEnter Message Hash to delete: ");
                 String deleteHash = scanner.nextLine();
                 boolean deleted = false;
                 for (int i = 0; i < globalCount; i++) {
                     if (rawMessagesLog[i] != null && rawMessagesLog[i].getMessageHash().equalsIgnoreCase(deleteHash)) {
                         System.out.println("Message: \"" + rawMessagesLog[i].getMessageContent() + "\" successfully deleted.");
-                        rawMessagesLog[i] = null; // Clears the record tracking slot
+                        rawMessagesLog[i] = null; 
                         deleted = true;
                         break;
                     }
@@ -187,7 +219,6 @@ public class Main {
 
             default:
                 System.out.println("Invalid reporting selection choice.");
-
         }
     }
 

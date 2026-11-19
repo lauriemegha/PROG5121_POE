@@ -117,7 +117,6 @@ public class Message {
         System.out.println("\n[JSON Research Export saved to memory]:\n" + jsonMock);
     }
 
-    // Getters and Setters needed for Part 3 operations
     public String getRecipient() { return recipient; }
     public String getMessageContent() { return messageContent; }
     public String getMessageStatus() { return messageStatus; }
